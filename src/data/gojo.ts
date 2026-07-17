@@ -1,22 +1,40 @@
 export type Technique = {
-  id: string
-  name: string
-  label: string
-  summary: string
+  readonly id: string
+  readonly name: string
+  readonly label: string
+  readonly summary: string
 }
 
 export type Relationship = {
-  id: string
-  name: string
-  role: string
-  summary: string
+  readonly id: string
+  readonly name: string
+  readonly role: string
+  readonly summary: string
 }
 
 export type TimelineEntry = {
-  id: string
-  era: string
-  title: string
-  summary: string
+  readonly id: string
+  readonly era: string
+  readonly title: string
+  readonly summary: string
+}
+
+export type GojoProfile = {
+  readonly name: string
+  readonly romanizedName: string
+  readonly title: string
+  readonly identity: string
+  readonly quote: string
+  readonly profile: {
+    readonly birthday: string
+    readonly height: string
+    readonly grade: string
+    readonly affiliation: string
+  }
+  readonly bio: string
+  readonly techniques: readonly Technique[]
+  readonly relationships: readonly Relationship[]
+  readonly timeline: readonly TimelineEntry[]
 }
 
 export const gojo = {
@@ -75,7 +93,7 @@ export const gojo = {
       label: 'DOMAIN',
       summary: '让目标接收无穷信息，从而停止思考与行动。',
     },
-  ] satisfies Technique[],
+  ] satisfies readonly Technique[],
   relationships: [
     {
       id: 'geto',
@@ -102,7 +120,7 @@ export const gojo = {
       role: '学生与后继者',
       summary: '具备特级实力，被视为未来能够并肩甚至超越五条的人。',
     },
-  ] satisfies Relationship[],
+  ] satisfies readonly Relationship[],
   timeline: [
     {
       id: 'hidden-inventory',
@@ -128,5 +146,5 @@ export const gojo = {
       title: '宿命对决',
       summary: '解封后迎战两面宿傩，以最强之名走向最终战场。',
     },
-  ] satisfies TimelineEntry[],
-} as const
+  ] satisfies readonly TimelineEntry[],
+} as const satisfies GojoProfile
