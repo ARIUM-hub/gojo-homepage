@@ -34,6 +34,7 @@ export function ProfilePage() {
             <PortraitImage
               src="/images/gojo-placeholder.jpg"
               alt="五条悟档案页人物图"
+              className="profile-portrait-media"
             />
             <div className="profile-portrait-overlay">
               <p className="eyebrow">SPECIAL GRADE SORCERER</p>
