@@ -362,6 +362,116 @@ button {
   background: var(--accent);
 }
 
+.domain-experience {
+  margin-top: 32px;
+}
+
+.domain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 100dvh;
+  overflow: hidden auto;
+  padding:
+    max(80px, calc(env(safe-area-inset-top) + 64px))
+    max(24px, calc(env(safe-area-inset-right) + 24px))
+    max(48px, calc(env(safe-area-inset-bottom) + 32px))
+    max(24px, calc(env(safe-area-inset-left) + 24px));
+  background:
+    radial-gradient(circle at 50% 42%, rgba(13, 54, 87, 0.9), transparent 34%),
+    radial-gradient(circle at 50% 50%, #0b1c2d 0%, #06111f 72%);
+  animation: domain-enter 280ms ease-out both;
+}
+
+.domain-overlay::before {
+  position: absolute;
+  z-index: -1;
+  color: rgba(101, 213, 255, 0.07);
+  font-size: min(80vw, 52rem);
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+  content: '∞';
+  transform: rotate(-8deg);
+  user-select: none;
+}
+
+.domain-close {
+  position: absolute;
+  top: max(16px, calc(env(safe-area-inset-top) + 16px));
+  right: max(16px, calc(env(safe-area-inset-right) + 16px));
+  display: grid;
+  place-items: center;
+  width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+  background: rgba(11, 28, 45, 0.88);
+  transition: border-color 200ms ease-out, background 200ms ease-out;
+}
+
+.domain-close:hover {
+  border-color: var(--accent);
+  background: var(--surface-accent);
+}
+
+.domain-close:focus-visible {
+  outline: 3px solid var(--text);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 7px rgba(101, 213, 255, 0.28);
+}
+
+.domain-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.domain-copy {
+  max-width: 760px;
+  text-align: center;
+}
+
+.domain-kicker {
+  margin: 0;
+  color: var(--accent);
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+  font-weight: 900;
+  letter-spacing: 0.24em;
+}
+
+.domain-copy h2 {
+  margin: 16px 0 24px;
+  font-size: clamp(4rem, 15vw, 10rem);
+  line-height: 0.9;
+  letter-spacing: -0.065em;
+}
+
+.domain-copy > p:last-child {
+  max-width: 34ch;
+  margin: 0 auto;
+  color: var(--text);
+  font-size: clamp(1.05rem, 3vw, 1.4rem);
+  line-height: 1.7;
+}
+
+@keyframes domain-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .info-card:nth-child(2) .text-button:hover,
 .info-card:nth-child(5) .text-button:hover {
   color: #eefaff;
@@ -544,6 +654,13 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .text-button {
+    transition: none;
+  }
+
+  .domain-overlay,
+  .domain-close,
+  .domain-trigger {
+    animation: none;
     transition: none;
   }
 }

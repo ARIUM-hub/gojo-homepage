@@ -3,12 +3,83 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 
+import { DomainExperience } from '../components/DomainExperience'
 import { RelationshipTabs } from '../components/RelationshipTabs'
 import { TechniqueGrid } from '../components/TechniqueGrid'
 import { gojo } from '../data/gojo'
 import { HomePage } from '../pages/HomePage'
 
 describe('HomePage interactions', () => {
+  it('opens the domain dialog and moves focus to its close button', async () => {
+    const user = userEvent.setup()
+
+    render(<DomainExperience />)
+
+    const trigger = screen.getByRole('button', { name: '展开无量空处' })
+    expect(
+      screen.queryByRole('dialog', { name: '无量空处' }),
+    ).not.toBeInTheDocument()
+
+    await user.click(trigger)
+
+    const dialog = screen.getByRole('dialog', { name: '无量空处' })
+    const closeButton = screen.getByRole('button', { name: '关闭无量空处' })
+    expect(dialog).toHaveAttribute('aria-modal', 'true')
+    expect(closeButton).toHaveFocus()
+  })
+
+  it('closes with Escape or the close button and restores trigger focus', async () => {
+    const user = userEvent.setup()
+
+    render(<DomainExperience />)
+
+    const trigger = screen.getByRole('button', { name: '展开无量空处' })
+    await user.click(trigger)
+    await user.keyboard('{Escape}')
+
+    expect(
+      screen.queryByRole('dialog', { name: '无量空处' }),
+    ).not.toBeInTheDocument()
+    expect(trigger).toHaveFocus()
+
+    await user.click(trigger)
+    await user.click(screen.getByRole('button', { name: '关闭无量空处' }))
+
+    expect(
+      screen.queryByRole('dialog', { name: '无量空处' }),
+    ).not.toBeInTheDocument()
+    expect(trigger).toHaveFocus()
+  })
+
+  it('keeps forward and reverse Tab focus inside the domain dialog', async () => {
+    const user = userEvent.setup()
+
+    render(<DomainExperience />)
+
+    await user.click(screen.getByRole('button', { name: '展开无量空处' }))
+    const closeButton = screen.getByRole('button', { name: '关闭无量空处' })
+
+    await user.tab()
+    expect(closeButton).toHaveFocus()
+
+    await user.tab({ shift: true })
+    expect(closeButton).toHaveFocus()
+  })
+
+  it('renders the domain experience trigger on the home page', () => {
+    render(
+      <MemoryRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
+        <HomePage />
+      </MemoryRouter>,
+    )
+
+    expect(
+      screen.getByRole('button', { name: '展开无量空处' }),
+    ).toBeInTheDocument()
+  })
+
   it('renders Gojo profile facts', () => {
     render(
       <MemoryRouter

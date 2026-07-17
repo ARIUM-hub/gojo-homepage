@@ -1,3 +1,4 @@
+import { DomainExperience } from '../components/DomainExperience'
 import { FanDisclaimer } from '../components/FanDisclaimer'
 import { HeroCard } from '../components/HeroCard'
 import { RelationshipTabs } from '../components/RelationshipTabs'
@@ -54,6 +55,7 @@ export function HomePage() {
           <p className="eyebrow">ABILITIES</p>
           <h2 id="techniques-title">术式能力</h2>
           <TechniqueGrid techniques={gojo.techniques} />
+          <DomainExperience />
         </section>
 
         <section
