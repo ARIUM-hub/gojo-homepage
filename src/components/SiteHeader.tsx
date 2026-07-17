@@ -7,10 +7,10 @@ export function SiteHeader() {
         GOJO / SATORU
       </Link>
       <nav aria-label="主要导航">
-        <Link to="/#profile-summary">档案</Link>
-        <Link to="/#techniques">术式</Link>
-        <Link to="/#relationships">关系</Link>
-        <Link to="/#story">经历</Link>
+        <a href="/#profile-summary">档案</a>
+        <a href="/#techniques">术式</a>
+        <a href="/#relationships">关系</a>
+        <a href="/#story">经历</a>
       </nav>
     </header>
   )

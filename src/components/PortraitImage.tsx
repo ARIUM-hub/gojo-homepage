@@ -7,12 +7,13 @@ interface PortraitImageProps {
 }
 
 export function PortraitImage({ src, alt, className }: PortraitImageProps) {
-  const [failed, setFailed] = useState(false)
+  const [failedSrc, setFailedSrc] = useState<string | null>(null)
+  const portraitClassName = ['portrait-media', className]
+    .filter(Boolean)
+    .join(' ')
 
-  if (failed) {
-    const fallbackClassName = ['portrait-fallback', className]
-      .filter(Boolean)
-      .join(' ')
+  if (failedSrc === src) {
+    const fallbackClassName = ['portrait-fallback', portraitClassName].join(' ')
 
     return (
       <div
@@ -27,12 +28,12 @@ export function PortraitImage({ src, alt, className }: PortraitImageProps) {
 
   return (
     <img
-      className={className}
+      className={portraitClassName}
       src={src}
       alt={alt}
       width="768"
       height="1024"
-      onError={() => setFailed(true)}
+      onError={() => setFailedSrc(src)}
     />
   )
 }
