@@ -24,7 +24,7 @@ export function HomePage() {
           aria-labelledby="profile-title"
         >
           <p className="eyebrow">PROFILE</p>
-          <h2 id="profile-title">关于五条悟</h2>
+          <h2 id="profile-title">{gojo.title}</h2>
           <p className="lead">{gojo.bio}</p>
           <dl className="quick-stats">
             <div>

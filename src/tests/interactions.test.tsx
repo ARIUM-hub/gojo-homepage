@@ -26,6 +26,9 @@ describe('HomePage interactions', () => {
       expect(
         screen.getByText('东京都立咒术高等专门学校'),
       ).toBeInTheDocument()
+      expect(
+        screen.getByRole('heading', { name: '最强的现代咒术师' }),
+      ).toBeInTheDocument()
     } finally {
       warn.mockRestore()
     }
