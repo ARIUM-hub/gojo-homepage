@@ -11,3 +11,4 @@ dist/
 .superpowers/
 tmp/
 output/
+.worktrees/
