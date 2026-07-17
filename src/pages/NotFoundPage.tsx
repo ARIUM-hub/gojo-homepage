@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export function NotFoundPage() {
   return (
-    <main>
+    <main id="main-content">
       <p>404</p>
       <h1>页面不存在</h1>
       <Link to="/">返回主页</Link>

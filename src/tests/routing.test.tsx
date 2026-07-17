@@ -1,19 +1,36 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 
 import { AppRoutes } from '../AppRoutes'
 
 function renderRoute(route: string) {
   return render(
-    <MemoryRouter initialEntries={[route]}>
+    <MemoryRouter
+      initialEntries={[route]}
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <AppRoutes />
     </MemoryRouter>,
   )
 }
 
 describe('AppRoutes', () => {
+  it('does not warn about React Router future flags', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+
+    try {
+      renderRoute('/')
+
+      expect(warn).not.toHaveBeenCalledWith(
+        expect.stringContaining('React Router Future Flag Warning'),
+      )
+    } finally {
+      warn.mockRestore()
+    }
+  })
+
   it('navigates from home to profile', async () => {
     const user = userEvent.setup()
 
@@ -28,6 +45,7 @@ describe('AppRoutes', () => {
   it('renders a not found page', () => {
     renderRoute('/missing')
 
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content')
     expect(
       screen.getByRole('heading', { name: '页面不存在' }),
     ).toBeInTheDocument()
