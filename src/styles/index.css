@@ -352,6 +352,11 @@ button {
   background: transparent;
 }
 
+.info-card:nth-child(2) .text-button:focus-visible,
+.info-card:nth-child(5) .text-button:focus-visible {
+  outline-color: #036a9e;
+}
+
 .text-button:hover {
   color: var(--bg);
   background: var(--accent);

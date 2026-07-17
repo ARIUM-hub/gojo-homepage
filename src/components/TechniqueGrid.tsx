@@ -19,7 +19,9 @@ export function TechniqueGrid({ techniques }: TechniqueGridProps) {
           <article className="info-card" key={technique.id}>
             <p className="eyebrow">{technique.label}</p>
             <h3>{technique.name}</h3>
-            {isOpen && <p id={detailId}>{technique.summary}</p>}
+            <p id={detailId} hidden={!isOpen}>
+              {technique.summary}
+            </p>
             <button
               className="text-button"
               type="button"
