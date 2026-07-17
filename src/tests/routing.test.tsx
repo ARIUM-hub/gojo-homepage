@@ -1,18 +1,39 @@
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { expect, test } from 'vitest';
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
+import { describe, expect, it } from 'vitest'
 
-import { AppRoutes } from '../AppRoutes';
+import { AppRoutes } from '../AppRoutes'
 
-test('首页显示五条悟标题', () => {
-  render(
-    <MemoryRouter
-      initialEntries={['/']}
-      future={{ v7_relativeSplatPath: true, v7_startTransition: true }}
-    >
+function renderRoute(route: string) {
+  return render(
+    <MemoryRouter initialEntries={[route]}>
       <AppRoutes />
     </MemoryRouter>,
-  );
+  )
+}
 
-  expect(screen.getByRole('heading', { name: '五条悟' })).toBeInTheDocument();
-});
+describe('AppRoutes', () => {
+  it('navigates from home to profile', async () => {
+    const user = userEvent.setup()
+
+    renderRoute('/')
+    await user.click(screen.getByRole('link', { name: '进入个人档案' }))
+
+    expect(
+      screen.getByRole('heading', { name: '个人档案' }),
+    ).toBeInTheDocument()
+  })
+
+  it('renders a not found page', () => {
+    renderRoute('/missing')
+
+    expect(
+      screen.getByRole('heading', { name: '页面不存在' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '返回主页' })).toHaveAttribute(
+      'href',
+      '/',
+    )
+  })
+})
