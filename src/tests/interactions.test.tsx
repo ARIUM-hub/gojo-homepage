@@ -66,6 +66,69 @@ describe('HomePage interactions', () => {
     expect(closeButton).toHaveFocus()
   })
 
+  it('isolates the home page while open and restores it after close', async () => {
+    const user = userEvent.setup()
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'clip'
+
+    try {
+      const { container } = render(
+        <MemoryRouter
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        >
+          <HomePage />
+        </MemoryRouter>,
+      )
+      container.setAttribute('aria-hidden', 'false')
+
+      const skipLink = screen.getByRole('link', { name: '跳到主要内容' })
+      const trigger = screen.getByRole('button', { name: '展开无量空处' })
+      await user.click(trigger)
+
+      const closeButton = screen.getByRole('button', { name: '关闭无量空处' })
+      expect(container).toHaveAttribute('inert')
+      expect(container).toHaveAttribute('aria-hidden', 'true')
+      expect(document.body.style.overflow).toBe('hidden')
+
+      skipLink.focus()
+      expect(closeButton).toHaveFocus()
+
+      await user.click(closeButton)
+
+      expect(container).not.toHaveAttribute('inert')
+      expect(container).toHaveAttribute('aria-hidden', 'false')
+      expect(document.body.style.overflow).toBe('clip')
+      expect(trigger).toHaveFocus()
+    } finally {
+      document.body.style.overflow = originalOverflow
+    }
+  })
+
+  it('restores background state when unmounted while open', async () => {
+    const user = userEvent.setup()
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'auto'
+
+    try {
+      const { container, unmount } = render(<DomainExperience />)
+
+      await user.click(screen.getByRole('button', { name: '展开无量空处' }))
+      expect(container).toHaveAttribute('inert')
+      expect(document.body.style.overflow).toBe('hidden')
+
+      unmount()
+
+      expect(container).not.toHaveAttribute('inert')
+      expect(container).not.toHaveAttribute('aria-hidden')
+      expect(document.body.style.overflow).toBe('auto')
+      expect(
+        document.querySelector('[data-domain-portal-host]'),
+      ).not.toBeInTheDocument()
+    } finally {
+      document.body.style.overflow = originalOverflow
+    }
+  })
+
   it('renders the domain experience trigger on the home page', () => {
     render(
       <MemoryRouter
